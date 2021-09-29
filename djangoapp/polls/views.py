@@ -37,8 +37,8 @@ def vote(response, question_id):
         if response.POST.get("addChoice"):
             txt = response.POST.get("newChoice")
             if len(txt) > 2:
-                q = Choice(question=question, choice_text=txt, votes=0)
-                q.save()
+                c = Choice(question=question, choice_text=txt, votes=0)
+                c.save()
                 return render(response, 'polls/detail.html', {'question': question})
         else:
             try:
