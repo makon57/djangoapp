@@ -5,7 +5,7 @@
     {% if latest_question_list %}
         <div class="row">
             {% for question in latest_question_list %}
-                <div class="col-sm-6">
+                <div id="question{{ forloop.counter }}" class="col-sm-6">
                     <div class="card">
 
                     <!-- -------------Header----------------- -->
@@ -13,12 +13,12 @@
                             <h4 class="text-center">{{ question.question_text }}</h4>
                             <ul class="nav nav-tabs card-header-tabs justify-content-center">
                                 <li class="nav-item">
-                                    <a id="nav-polls" class="nav-link" onclick="$('#Polls').toggle();$('#Vote').attr('Style','display: none;');$('#nav-polls').toggleClass('active');$('#nav-vote').removeClass('active')">
+                                    <a id="nav-polls{{ forloop.counter }}" class="nav-link" onclick="$('#Polls{{ forloop.counter }}').toggle();$('#Vote{{ forloop.counter }}').attr('Style','display: none;');$('#nav-polls{{ forloop.counter }}').toggleClass('active');$('#nav-vote{{ forloop.counter }}').removeClass('active')">
                                         Polls
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a id="nav-vote" class="nav-link" onclick="$('#Vote').toggle();$('#Polls').attr('Style','display: none;');$('#nav-vote').toggleClass('active');$('#nav-polls').removeClass('active')">
+                                    <a id="nav-vote{{ forloop.counter }}" class="nav-link" onclick="$('#Vote{{ forloop.counter }}').toggle();$('#Polls{{ forloop.counter }}').attr('Style','display: none;');$('#nav-vote{{ forloop.counter }}').toggleClass('active');$('#nav-polls{{ forloop.counter }}').removeClass('active')">
                                         Vote
                                     </a>
                                 </li>
@@ -27,7 +27,7 @@
                     <!-- -------------Header----------------- -->
 
                     <!-- ------------- Poll Card----------------- -->
-                        <div id="Polls" class="card-body" style="display: none">
+                        <div id="Polls{{ forloop.counter }}" class="card-body" style="display: none">
                             <fieldset class="border p-2">
                                 <legend class="w-auto"></legend>
                                 <ul>
@@ -43,18 +43,18 @@
                     <!-- ------------- Poll Card----------------- -->
 
                     <!-- ------------- Vote Card----------------- -->
-                        <div id="Vote" class="card-body" style="display: none">
+                        <div id="Vote{{ forloop.counter }}" class="card-body" style="display: none">
                             <form action="{% url 'polls:vote' question.id %}" method="post">
                                 {% csrf_token %}
                                 <fieldset class="border p-2">
                                     <legend class="w-auto"></legend>
                                         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                                        {% if question.choice_set.all %}
                                             {% for choice in question.choice_set.all %}
                                                 <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                                                 <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                                             {% endfor %}
-                                        <br>
-                                        {% if question.choice_set.all %}
+                                            <br>
                                             <input class="btn btn-primary" type="submit" value="Vote" onclick="$('#Polls').toggle();$('#Vote').attr('Style','display: none;');$('#nav-polls').toggleClass('active');$('#nav-vote').removeClass('active')">
                                         {% else %}
                                             <p>Add some choices!</p>
@@ -90,20 +90,20 @@
     {% elif all_questions %}
         <div class="row">
             {% for question in all_questions %}
-            <div class="col-sm-6">
-                <div class="card text-center">
+            <div id="question{{ forloop.counter }}" class="col-sm-6">
+                <div class="card">
 
                 <!-- -------------Header----------------- -->
                     <div class="card-header">
-                        <h4>{{ question.question_text }}</h4>
+                        <h4 class="text-center">{{ question.question_text }}</h4>
                         <ul class="nav nav-tabs card-header-tabs justify-content-center">
                             <li class="nav-item">
-                                <a id="nav-polls" class="nav-link" onclick="$('#Polls').toggle();$('#Vote').attr('Style','display: none;');$('#nav-polls').toggleClass('active');$('#nav-vote').removeClass('active')">
+                                <a id="nav-polls{{ forloop.counter }}" class="nav-link" onclick="$('#Polls{{ forloop.counter }}').toggle();$('#Vote{{ forloop.counter }}').attr('Style','display: none;');$('#nav-polls{{ forloop.counter }}').toggleClass('active');$('#nav-vote{{ forloop.counter }}').removeClass('active')">
                                     Polls
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a id="nav-vote" class="nav-link" onclick="$('#Vote').toggle();$('#Polls').attr('Style','display: none;');$('#nav-vote').toggleClass('active');$('#nav-polls').removeClass('active')">
+                                <a id="nav-vote{{ forloop.counter }}" class="nav-link" onclick="$('#Vote{{ forloop.counter }}').toggle();$('#Polls{{ forloop.counter }}').attr('Style','display: none;');$('#nav-vote{{ forloop.counter }}').toggleClass('active');$('#nav-polls{{ forloop.counter }}').removeClass('active')">
                                     Vote
                                 </a>
                             </li>
@@ -112,34 +112,34 @@
                 <!-- -------------Header----------------- -->
 
                 <!-- ------------- Poll Card----------------- -->
-                    <div id="Polls" class="card-body" style="display: none">
+                    <div id="Polls{{ forloop.counter }}" class="card-body" style="display: none">
                         <fieldset class="border p-2">
                             <legend class="w-auto"></legend>
                             <ul>
                                 {% for choice in question.choice_set.all %}
-                                    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+                                    <li>{{ choice.votes }} vote{{ choice.votes|pluralize }} -- {{ choice.choice_text }}</li>
                                 {% endfor %}
                             </ul>
                         </fieldset>
-                        <a href="#Vote" onclick="$('#Vote').toggle();$('#Polls').attr('Style','display: none;');$('#nav-vote').toggleClass('active');$('#nav-polls').removeClass('active')">
+                        <a onclick="$('#Vote').toggle();$('#Polls').attr('Style','display: none;');$('#nav-vote').toggleClass('active');$('#nav-polls').removeClass('active')">
                             Vote again?
                         </a>
                     </div>
                 <!-- ------------- Poll Card----------------- -->
 
                 <!-- ------------- Vote Card----------------- -->
-                    <div id="Vote" class="card-body" style="display: none">
+                    <div id="Vote{{ forloop.counter }}" class="card-body" style="display: none">
                         <form action="{% url 'polls:vote' question.id %}" method="post">
                             {% csrf_token %}
                             <fieldset class="border p-2">
                                 <legend class="w-auto"></legend>
                                     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                                    {% if question.choice_set.all %}
                                         {% for choice in question.choice_set.all %}
                                             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                                             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                                         {% endfor %}
-                                    <br>
-                                    {% if question.choice_set.all %}
+                                        <br>
                                         <input class="btn btn-primary" type="submit" value="Vote" onclick="$('#Polls').toggle();$('#Vote').attr('Style','display: none;');$('#nav-polls').toggleClass('active');$('#nav-vote').removeClass('active')">
                                     {% else %}
                                         <p>Add some choices!</p>
