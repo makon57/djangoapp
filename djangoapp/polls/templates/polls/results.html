@@ -1,15 +1,8 @@
-{% extends 'polls/base.html' %}
-{% block title %}Create New List{% endblock %}
-
-{% block content %}
-
-<h1>{{ question.question_text }}</h1>
-
-<ul>
-    {% for choice in question.choice_set.all %}
-        <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
-    {% endfor %}
-</ul>
-
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
-{% endblock %}
+<fieldset class="border p-2">
+    <legend class="w-auto"></legend>
+    <ul>
+        {% for choice in question.choice_set.all %}
+            <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+        {% endfor %}
+    </ul>
+</fieldset>
