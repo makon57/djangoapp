@@ -1,0 +1,16 @@
+<html>
+<head>
+    <title>{% block title %}So Many ???{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'polls:index' %}">Home</a>
+    </nav>
+    <div id="content", name="content">
+        {% block content%}
+        {% endblock %}
+    </div>
+</body>
+</html>
