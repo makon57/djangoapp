@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
@@ -24,11 +24,7 @@ def index(response):
 
 def detail(response, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    if response.method == "DELETE":
-        question.delete()
-        return HttpResponseRedirect(reverse('polls:index'))
-    else:
-        return render(response, 'polls/detail.html', {'question': question})
+    return render(response, 'polls/detail.html', {'question': question})
 
 
 class ResultsView(generic.DetailView):
@@ -56,3 +52,12 @@ def vote(response, question_id):
                 selected_choice.votes += 1
                 selected_choice.save()
                 return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+def delete(response, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+
+    if response.method == "POST":
+        question.delete()
+        return redirect('/polls')
+
+    return render(response, 'index.html', {})
