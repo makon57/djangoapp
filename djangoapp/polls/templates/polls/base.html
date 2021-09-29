@@ -4,9 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <style type="text/css">
+        #content {
+            padding: 2vw 4vw 4vw 4vw;
+        }
+    </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>{% block title %}So Many ???{% endblock %}</title>
+    <title>Polladise</title>
 </head>
 <body>
     <nav class="navbar navbar-light bg-light">
@@ -14,20 +19,15 @@
             <img src="https://i.imgur.com/YAqhAts.png" width="35" height="35" alt="">
             Polladise
         </a>
-        <form action="#" method="post">
+        <form action="" method="post">
             {% csrf_token %}
             <input type="text" name="question">
             <button class="btn btn-primary" type="submit" name="newQuestion" value="newQuestion">Create New Question</button>
         </form>
     </nav>
 
-    <div class="sidenav">
-        {% block sidebar %}
-        {% endblock %}
-    </div>
-
     <div id="content" name="content">
-        <div class="row justify-content-center">
+        <div>
             {% block content%}
             {% endblock %}
         </div>

@@ -1,11 +1,10 @@
 {% extends 'polls/base.html' %}
-{% block title %}Create New List{% endblock %}
 
-{% block sidebar %}
+{% block content %}
     {% if latest_question_list %}
-        <div class="row">
+        <div class="row justify-content-center" >
             {% for question in latest_question_list %}
-                <div id="question{{ forloop.counter }}" class="col-sm-6">
+                <div id="question{{ forloop.counter }}" class="col-sm-8" style="padding-bottom: 1vw;">
                     <div class="card">
 
                     <!-- -------------Header----------------- -->
@@ -24,74 +23,27 @@
                                 </li>
                             </ul>
                         </div>
-                    <!-- -------------Header----------------- -->
 
                     <!-- ------------- Poll Card----------------- -->
                         <div id="Polls{{ forloop.counter }}" class="card-body" style="display: none">
-                            <fieldset class="border p-2">
-                                <legend class="w-auto"></legend>
-                                <ul>
-                                    {% for choice in question.choice_set.all %}
-                                        <li>{{ choice.votes }} vote{{ choice.votes|pluralize }} -- {{ choice.choice_text }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </fieldset>
-                            <a onclick="$('#Vote{{ forloop.counter }}').toggle();$('#Polls{{ forloop.counter }}').attr('Style','display: none;');$('#nav-vote{{ forloop.counter }}').toggleClass('active');$('#nav-polls{{ forloop.counter }}').removeClass('active')">
-                                Vote again?
-                            </a>
+                            {% include 'polls/results.html' %}
                         </div>
-                    <!-- ------------- Poll Card----------------- -->
 
                     <!-- ------------- Vote Card----------------- -->
                         <div id="Vote{{ forloop.counter }}" class="card-body" style="display: none">
-                            <form action="{% url 'polls:vote' question.id %}" method="post">
-                                {% csrf_token %}
-                                <fieldset class="border p-2">
-                                    <legend class="w-auto"></legend>
-                                        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                                        {% if question.choice_set.all %}
-                                            {% for choice in question.choice_set.all %}
-                                                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" onchange="$('#votes-input').attr('disabled', false)">
-                                                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
-                                                <br>
-                                            {% endfor %}
-                                            <input id="votes-input" class="btn btn-primary votes-input" type="submit" value="Vote">
-                                            <br>
-                                        {% else %}
-                                            <p>Add some choices!</p>
-                                        {% endif %}
-                                </fieldset>
-                                <br>
-                            </form>
-                            <div class="addChoice row justify-content-center">
-                                <form action="{% url 'polls:vote' question.id %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="text" name="newChoice">
-                                    <button class="btn btn-primary" type="submit" name="addChoice" value="addChoice" href="#Polls">
-                                        Add Choices
-                                    </button>
-                                </form>
-                                <form action="{% url 'polls:delete' question.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button action="{% url 'polls:delete' question.id %}" method="post" type="submit" name='delete' value='delete'>
-                                        Delete Question
-                                    </button>
-                                </form>
-                            </div>
+                            {% include 'polls/detail.html' %}
                         </div>
-                    <!-- ------------- Vote Card----------------- -->
 
                     </div>
                 </div>
             {% endfor %}
         </div>
-        <br>
-        <a href="{% url 'polls:all' %}">Show More</a>
-        <br>
+        <div class='text-center'><a href="{% url 'polls:all' %}">Show More</a></div>
+
     {% elif all_questions %}
         <div class="row">
             {% for question in all_questions %}
-            <div id="question{{ forloop.counter }}" class="col-sm-6">
+            <div id="question{{ forloop.counter }}" class="col-sm-6" style="padding-bottom: 1vw;">
                 <div class="card">
 
                 <!-- -------------Header----------------- -->
@@ -110,71 +62,24 @@
                             </li>
                         </ul>
                     </div>
-                <!-- -------------Header----------------- -->
 
                 <!-- ------------- Poll Card----------------- -->
                     <div id="Polls{{ forloop.counter }}" class="card-body" style="display: none">
-                        <fieldset class="border p-2">
-                            <legend class="w-auto"></legend>
-                            <ul>
-                                {% for choice in question.choice_set.all %}
-                                    <li>{{ choice.votes }} vote{{ choice.votes|pluralize }} -- {{ choice.choice_text }}</li>
-                                {% endfor %}
-                            </ul>
-                        </fieldset>
-                        <a onclick="$('#Vote{{ forloop.counter }}').toggle();$('#Polls{{ forloop.counter }}').attr('Style','display: none;');$('#nav-vote{{ forloop.counter }}').toggleClass('active');$('#nav-polls{{ forloop.counter }}').removeClass('active')">
-                            Vote again?
-                        </a>
+                        {% include 'polls/results.html' %}
                     </div>
-                <!-- ------------- Poll Card----------------- -->
 
                 <!-- ------------- Vote Card----------------- -->
                     <div id="Vote{{ forloop.counter }}" class="card-body" style="display: none">
-                        <form action="{% url 'polls:vote' question.id %}" method="post">
-                            {% csrf_token %}
-                            <fieldset class="border p-2">
-                                <legend class="w-auto"></legend>
-                                    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                                    {% if question.choice_set.all %}
-                                        {% for choice in question.choice_set.all %}
-                                            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-                                        {% endfor %}
-                                        <br>
-                                        <input class="btn btn-primary" type="submit" value="Vote" onclick="$('#Polls{{ forloop.counter }}').toggle();$('#Vote{{ forloop.counter }}').attr('Style','display: none;');$('#nav-polls{{ forloop.counter }}').toggleClass('active');$('#nav-vote{{ forloop.counter }}').removeClass('active')">
-                                    {% else %}
-                                        <p>Add some choices!</p>
-                                    {% endif %}
-                            </fieldset>
-                            <br>
-                        </form>
-                        <div class="addChoice row justify-content-center">
-                            <form action="{% url 'polls:vote' question.id %}" method="post">
-                                {% csrf_token %}
-                                <input type="text" name="newChoice">
-                                <button class="btn btn-primary" type="submit" name="addChoice" value="addChoice" href="#Polls" onclick="$('#Polls').toggle();$('#Vote').attr('Style','display: none;');$('#nav-polls').toggleClass('active');$('#nav-vote').removeClass('active')">
-                                    Add Choices
-                                </button>
-                            </form>
-                            <form action="{% url 'polls:delete' question.id %}" method="post">
-                                {% csrf_token %}
-                                <button action="{% url 'polls:delete' question.id %}" method="post" type="submit" name='delete' value='delete'>
-                                    Delete Question
-                                </button>
-                            </form>
-                        </div>
+                        {% include 'polls/detail.html' %}
                     </div>
-                <!-- ------------- Vote Card----------------- -->
-
                 </div>
             </div>
         {% endfor %}
         </div>
-        <br>
-        <a href="{% url 'polls:index' %}">Show Less</a>
-        <br>
-    {% else %}
-        <p>No polls are available.</p>
+        <div class='text-center'><a href="{% url 'polls:index' %}">Show Less</a></div>
+
+    {% elif alert_flag %}
+        <script>alert("Sorry! You didn't select an option. Try again.");window.location.href="/polls"</script>
     {% endif %}
     <br>
 {% endblock %}

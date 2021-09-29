@@ -2,7 +2,10 @@
     <legend class="w-auto"></legend>
     <ul>
         {% for choice in question.choice_set.all %}
-            <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+            <li>{{ choice.votes }} vote{{ choice.votes|pluralize }} -- {{ choice.choice_text }}</li>
         {% endfor %}
     </ul>
 </fieldset>
+<a onclick="$('#Vote{{ forloop.counter }}').toggle();$('#Polls{{ forloop.counter }}').attr('Style','display: none;');$('#nav-vote{{ forloop.counter }}').toggleClass('active');$('#nav-polls{{ forloop.counter }}').removeClass('active')">
+    Vote again?
+</a>
