@@ -11,11 +11,16 @@
             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
         {% endfor %}
+        <br>
+        {% if question.choice_set.all %}
+        <input type="submit" value="Vote">
+        {% else %}
+        <p>Add some choices!</p>
+        {% endif %}
     </fieldset>
-    <input type="submit" value="Vote">
+    <br>
     <input type="text" name="newChoice">
     <button type="submit" name="addChoice" value="addChoice">Add Choices</button>
-
 </form>
 <form action="{% url 'polls:delete' question.id %}" method="post">
     {% csrf_token %}

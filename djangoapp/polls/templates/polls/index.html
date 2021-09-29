@@ -8,9 +8,20 @@
                 <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
             {% endfor %}
         </ul>
+        <a href="{% url 'polls:all' %}">Show More</a>
+        <br>
+    {% elif all_questions %}
+        <ul>
+            {% for question in all_questions %}
+                <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'polls:index' %}">Show Less</a>
+        <br>
     {% else %}
         <p>No polls are available.</p>
     {% endif %}
+    <br>
     <form action="#" method="post">
         {% csrf_token %}
         <input type="text" name="question">

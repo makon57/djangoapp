@@ -22,6 +22,19 @@ def index(response):
     context = {'latest_question_list': latest_question_list}
     return render(response, 'polls/index.html', context)
 
+def all(response):
+    if response.method == "POST":
+        if response.POST.get("newQuestion"):
+            txt = response.POST.get("question")
+            if len(txt) > 2:
+                q = Question(question_text=txt, pub_date=timezone.now())
+                q.save()
+            else:
+                print("invalid")
+    all_questions = Question.objects.order_by('-pub_date').all()
+    context = {'all_questions': all_questions}
+    return render(response, 'polls/index.html', context)
+
 def detail(response, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(response, 'polls/detail.html', {'question': question})
