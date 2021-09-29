@@ -36,7 +36,7 @@
                                     {% endfor %}
                                 </ul>
                             </fieldset>
-                            <a onclick="$('#Vote').toggle();$('#Polls').attr('Style','display: none;');$('#nav-vote').toggleClass('active');$('#nav-polls').removeClass('active')">
+                            <a onclick="$('#Vote{{ forloop.counter }}').toggle();$('#Polls{{ forloop.counter }}').attr('Style','display: none;');$('#nav-vote{{ forloop.counter }}').toggleClass('active');$('#nav-polls{{ forloop.counter }}').removeClass('active')">
                                 Vote again?
                             </a>
                         </div>
@@ -51,11 +51,12 @@
                                         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
                                         {% if question.choice_set.all %}
                                             {% for choice in question.choice_set.all %}
-                                                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                                                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                                                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" onchange="$('#votes-input').attr('disabled', false)">
+                                                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                                                <br>
                                             {% endfor %}
+                                            <input id="votes-input" class="btn btn-primary votes-input" type="submit" value="Vote">
                                             <br>
-                                            <input class="btn btn-primary" type="submit" value="Vote" onclick="$('#Polls').toggle();$('#Vote').attr('Style','display: none;');$('#nav-polls').toggleClass('active');$('#nav-vote').removeClass('active')">
                                         {% else %}
                                             <p>Add some choices!</p>
                                         {% endif %}
@@ -66,7 +67,7 @@
                                 <form action="{% url 'polls:vote' question.id %}" method="post">
                                     {% csrf_token %}
                                     <input type="text" name="newChoice">
-                                    <button class="btn btn-primary" type="submit" name="addChoice" value="addChoice" href="#Polls" onclick="$('#Polls').toggle();$('#Vote').attr('Style','display: none;');$('#nav-polls').toggleClass('active');$('#nav-vote').removeClass('active')">
+                                    <button class="btn btn-primary" type="submit" name="addChoice" value="addChoice" href="#Polls">
                                         Add Choices
                                     </button>
                                 </form>
@@ -121,7 +122,7 @@
                                 {% endfor %}
                             </ul>
                         </fieldset>
-                        <a onclick="$('#Vote').toggle();$('#Polls').attr('Style','display: none;');$('#nav-vote').toggleClass('active');$('#nav-polls').removeClass('active')">
+                        <a onclick="$('#Vote{{ forloop.counter }}').toggle();$('#Polls{{ forloop.counter }}').attr('Style','display: none;');$('#nav-vote{{ forloop.counter }}').toggleClass('active');$('#nav-polls{{ forloop.counter }}').removeClass('active')">
                             Vote again?
                         </a>
                     </div>
@@ -140,7 +141,7 @@
                                             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                                         {% endfor %}
                                         <br>
-                                        <input class="btn btn-primary" type="submit" value="Vote" onclick="$('#Polls').toggle();$('#Vote').attr('Style','display: none;');$('#nav-polls').toggleClass('active');$('#nav-vote').removeClass('active')">
+                                        <input class="btn btn-primary" type="submit" value="Vote" onclick="$('#Polls{{ forloop.counter }}').toggle();$('#Vote{{ forloop.counter }}').attr('Style','display: none;');$('#nav-polls{{ forloop.counter }}').toggleClass('active');$('#nav-vote{{ forloop.counter }}').removeClass('active')">
                                     {% else %}
                                         <p>Add some choices!</p>
                                     {% endif %}

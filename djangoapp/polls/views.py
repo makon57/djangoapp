@@ -62,7 +62,7 @@ def vote(response, question_id):
             if len(txt) > 2:
                 c = Choice(question=question, choice_text=txt, votes=0)
                 c.save()
-                return HttpResponse(status=204)
+                return HttpResponseRedirect(reverse('polls:index'))
         else:
             try:
                 selected_choice = question.choice_set.get(pk=response.POST['choice'])
@@ -75,7 +75,7 @@ def vote(response, question_id):
                 selected_choice.votes += 1
                 selected_choice.save()
                 redirect('/polls')
-                return HttpResponse(status=204)
+                return HttpResponseRedirect(reverse('polls:index'))
 
 
 
