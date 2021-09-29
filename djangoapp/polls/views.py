@@ -24,7 +24,11 @@ def index(response):
 
 def detail(response, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(response, 'polls/detail.html', {'question': question})
+    if response.method == "DELETE":
+        question.delete()
+        return HttpResponseRedirect(reverse('polls:index'))
+    else:
+        return render(response, 'polls/detail.html', {'question': question})
 
 
 class ResultsView(generic.DetailView):
