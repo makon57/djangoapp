@@ -18,12 +18,5 @@ COPY . /djangoapp
 # RUN useradd -D djangouser
 # USER djangouser
 
-# EXPOSE 8000
-
-# ENV DB_NAME djangoapp
-# ENV USERNAME djangouser
-# ENV HOSTNAME localhost
-# ENV PORT 3306
-
 # # run app
 # CMD ["/app/manage.py", "runserver", "0.0.0.0:8000"]
