@@ -4,26 +4,26 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV DEBUG 0
 
-RUN mkdir /app
+RUN mkdir /djangoapp
 
-WORKDIR /app
+WORKDIR /djangoapp
 
-ADD requirements.txt /app
+ADD requirements.txt /djangoapp
 
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-COPY . /app
+COPY . /djangoapp
 
 # add and run as non-root user
-RUN adduser -D djangouser
-USER djangouser
+# RUN useradd -D djangouser
+# USER djangouser
 
-EXPOSE 8000
+# EXPOSE 8000
 
-ENV DB_NAME djangoapp
-ENV USERNAME djangouser
-ENV HOSTNAME localhost
-ENV PORT 3306
+# ENV DB_NAME djangoapp
+# ENV USERNAME djangouser
+# ENV HOSTNAME localhost
+# ENV PORT 3306
 
-# run app
-CMD ["/app/manage.py", "runserver", "0.0.0.0:8000"]
+# # run app
+# CMD ["/app/manage.py", "runserver", "0.0.0.0:8000"]
