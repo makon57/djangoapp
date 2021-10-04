@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': env('MYSQL_DB'),
         'USER': env('MYSQL_USER'),
         'PASSWORD': env('MYSQL_PASSWORD'),
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
         'PORT': 3306,
     }
 }
