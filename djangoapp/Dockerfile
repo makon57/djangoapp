@@ -1,24 +1,17 @@
 FROM python:latest
 
-RUN apt-get update && apt-get install -y ...
+ENV PYTHONUNBUFFERED 1
 
-WORKDIR /django-app
+RUN mkdir /djangoapp
 
-# Then install Python dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-# Then copy in the rest of the application
-# NOTE: this _does_ honor .dockerignore
-COPY . .
-
-# And explain how to run it
-ENV PYTHONUNBUFFERED=1
+WORKDIR /djangoapp
 EXPOSE 8000
-USER userapp
-# consider splitting this into an ENTRYPOINT that waits for the
-# the database, runs migrations, and then `exec "$@"` to run the CMD
-CMD sleep 7; python manage.py migrate; python manage.py runserver 0.0.0.0:8000
+
+ADD requirements.txt /djangoapp
+
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+COPY . /djangoapp
 
 # add and run as non-root user
 # RUN useradd -D djangouser
